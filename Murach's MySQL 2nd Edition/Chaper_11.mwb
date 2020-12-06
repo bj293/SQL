@@ -1,0 +1,103 @@
+
+-- Exercise 2
+use ex;
+
+drop table if exists members;
+drop table if exists members_groups;
+drop table if exists groupss;
+
+create table members(
+members_id int primary key,
+first_name varchar(45) not null,
+last_name varchar(45) not null,
+address varchar(45) default '',
+city varchar(45) default '',
+state varchar(45) default '',
+phone char(10) default ''
+)
+charset latin1 collate latin1_swedish_ci
+engine = InnoDB;
+
+create table members_groups(
+member_id int  references members(member_id),
+group_id int references groupss(group_id)
+)
+charset latin1 collate latin1_swedish_ci
+engine = innodb;
+
+create table groupss(
+group_id int primary key,
+group_name varchar(45) not null
+)
+charset latin1 collate latin1_swedish_ci
+engine = innodb;
+
+
+USE ex;
+
+DROP TABLE IF EXISTS members_committes;
+DROP TABLE IF EXISTS memberss;
+DROP TABLE IF EXISTS committees;
+truncate table members_committees
+
+CREATE TABLE memberss 
+(
+  member_id     INT           PRIMARY KEY   AUTO_INCREMENT, 
+  first_name    VARCHAR(50)   NOT NULL, 
+  last_name     VARCHAR(50)   NOT NULL, 
+  address       VARCHAR(50)   NOT NULL, 
+  city          VARCHAR(25)   NOT NULL, 
+  state         CHAR(2), 
+  phone         VARCHAR(20)
+);
+
+CREATE TABLE committees (
+    committee_id INT PRIMARY KEY AUTO_INCREMENT,
+    committee_name VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE members_committees (
+    member_id INT PRIMARY KEY,
+    committee_id INT NOT NULL
+);
+
+
+use ap;
+Create view view_check as
+select vendor_id, invoice_date
+from invoices;
+
+select * from view_check;
+
+CREATE OR REPLACE VIEW top_5_invoices AS
+    SELECT 
+        vendor_id, invoice_total
+    FROM
+        invoices
+    ORDER BY invoice_total DESC
+    LIMIT 5;
+    
+    SELECT 
+    *
+FROM
+    top_5_invoices;
+    
+    
+CREATE OR REPLACE VIEW invoices_outstanding (invoices_number , invoice_date , invoice_total , balance_due) AS
+    SELECT 
+        invoice_number,
+        invoice_date,
+        invoice_total,
+        invoice_total - payment_total - credit_total
+    FROM
+        invoices
+    WHERE
+        invoice_total - payment_total - credit_total > 0;
+        
+        
+SELECT 
+    *
+FROM
+    invoices_outstanding;
+    
+
